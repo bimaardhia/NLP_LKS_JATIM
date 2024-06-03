@@ -120,6 +120,24 @@ def predict_ind(text):
     return result
 
 
+def predict(text):
+    pre_input_text = preproces_ind(text) 
+    
+    # Inisialisasi TF-IDF dengan vocabulary yang sudah Anda load
+    tf_idf_vec = TfidfVectorizer(vocabulary=set(vocab))
+
+    # Transform teks input menjadi representasi TF-IDF
+    input_tfidf = tf_idf_vec.fit_transform([pre_input_text]).toarray()
+
+    # Prediksi sentimen
+    result = model.predict(input_tfidf)
+    
+
+
+    return result
+
+
+
 
 st.header('Analisis Sentimen')
 st.write('Berikut merupakan GUI berbasis website menggunakan Streamlit untuk mendeteksi Ujaran Kebencian pada data ( text ) menggunakan algoritma KNN, yang menghasilkan output :')
@@ -140,7 +158,7 @@ with st.expander('Analisis File .csv :'):
     if upl:
         data = pd.read_csv(upl,on_bad_lines='skip')
         data['clean'] = data['text'].fillna('').astype(str).apply(preproces_ind)  # Fill NaNs and convert to string
-        data['Sentiment'] = data['clean'].apply(predict_ind)
+        data['Sentiment'] = data['clean'].apply(predict)
         st.write(data.head(5))
 
         @st.cache_data
