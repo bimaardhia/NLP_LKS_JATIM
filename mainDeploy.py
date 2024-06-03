@@ -9,18 +9,15 @@ from joblib import load
 import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 import gzip
+import gzip
+
 with gzip.open('tf_idf_feature.pickle.gz', 'rb') as f:
     vocab = pickle.load(f)
 
-# Memuat vocabulary dari file pickle
-# Konversi vocab menjadi set dari string
-# Konversi vocab menjadi set dari string
-if isinstance(vocab, np.ndarray):  # Jika vocab adalah numpy array
-    vocab = set(vocab.tolist())  # Ubah menjadi list lalu set
-elif isinstance(vocab, list):  # Jika vocab adalah list
-    vocab = set([item for sublist in vocab for item in sublist])  # Ratakan list of lists
-else:  
-    vocab = set(vocab)  # 
+# Meratakan vocab jika diperlukan (jika vocab adalah list of lists)
+vocab = [item for sublist in vocab for item in sublist]
+
+# Inisialisasi TF-IDF dengan vocabulary yang sudah Anda load
 
 
 
