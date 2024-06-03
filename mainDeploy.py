@@ -1,32 +1,3 @@
-import streamlit as st
-import pandas as pd
-import numpy as np
-import re 
-import string
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
-from joblib import load
-import pickle
-from sklearn.feature_extraction.text import TfidfVectorizer
-import gzip
-# Memuat vocabulary dari file pickle
-with gzip.open('tf_idf_feature.pickle.gz', 'rb') as f:
-    vocab = pickle.load(f)
-
-print(vocab)
-print(type(vocab))
-
-# Meratakan vocab jika diperlukan (jika vocab adalah list of lists)
-vocab = vocab.flatten()
-
-# Periksa tipe data dari vocab dan konversi ke set of strings jika perlu
-if isinstance(vocab, np.ndarray):
-    vocab = set(vocab.astype(str))  # Ubah elemen ke string, lalu jadikan set
-elif isinstance(vocab, list):
-    vocab = set([str(x) for x in vocab])  # Ubah elemen ke string, lalu jadikan set
-
-# Inisialisasi TF-IDF dengan vocabulary yang sudah Anda load
-tf_idf_vec = TfidfVectorizer(vocabulary=vocab)
 
 
 import nltk
@@ -48,10 +19,20 @@ check_and_download('punkt')
 # Memeriksa dan mengunduh koleksi data 'stopwords'
 check_and_download('stopwords')
 
-
+import streamlit as st
+import pandas as pd
+import numpy as np
+import re 
+import string
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+from joblib import load
+import pickle
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 model = load('modelSVM.joblib')
 
+vocab = pickle.load(open('kbest_feature.pickle', 'rb'))
 
 
 def case_folding(text):
@@ -110,25 +91,19 @@ def create_wordcloud(text):
     ax.imshow(gambar)
     ax.axis('off')
     st.pyplot(fig)
-    
-from sklearn.feature_selection import SelectKBest, chi2
-
 
 
 def predict_ind(text):
-    pre_input_text = preproces_ind(text)
-    tf_idf_vec = TfidfVectorizer(vocabulary=set(vocab))
-    input_tfidf = tf_idf_vec.fit_transform([pre_input_text])
-
-    # Prediksi sentimen tanpa seleksi fitur terlebih dahulu
-    result = model.predict(input_tfidf.toarray())
-
-    # Seleksi fitur berdasarkan prediksi awal
-    selector = SelectKBest(chi2, k=1000)
-    input_tfidf = selector.fit_transform(input_tfidf, result)
+    pre_input_text = preproces_ind(text) 
     
-    # Prediksi ulang setelah seleksi fitur
-    result = model.predict(input_tfidf.toarray())
+    # Inisialisasi TF-IDF dengan vocabulary yang sudah Anda load
+    tf_idf_vec = TfidfVectorizer(vocabulary=set(vocab))
+
+    # Transform teks input menjadi representasi TF-IDF
+    input_tfidf = tf_idf_vec.fit_transform([pre_input_text]).toarray()
+
+    # Prediksi sentimen
+    result = model.predict(input_tfidf)
     
     # --- Bagian baru untuk mendapatkan kata-kata penting ---
     feature_names = tf_idf_vec.get_feature_names_out()  # Nama-nama fitur dari TF-IDF
