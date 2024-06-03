@@ -167,11 +167,6 @@ with st.expander('Analisis File .csv :'):
 
         st.bar_chart(data['Sentiment'].value_counts())
 
-        st.subheader('WordCloud')
-        dropdown = st.selectbox('Pilih sentimen yang akan dibuat WordCloud ', data['Sentiment'].unique())
-        if dropdown:
-            word = ' '.join(data[data['Sentiment']==dropdown]['clean'])
-            create_wordcloud(word)
 
 
 
