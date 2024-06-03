@@ -110,19 +110,26 @@ def create_wordcloud(text):
     ax.imshow(gambar)
     ax.axis('off')
     st.pyplot(fig)
+    
+from sklearn.feature_selection import SelectKBest, chi2
+
 
 
 def predict_ind(text):
     pre_input_text = preproces_ind(text) 
     
-    # Inisialisasi TF-IDF dengan vocabulary yang sudah Anda load
-    tf_idf_vec = TfidfVectorizer(vocabulary=set(vocab))
-
+# Inisialisasi TF-IDF
+    tf_idf_vec = TfidfVectorizer()  # Tidak perlu lagi memberikan vocabulary secara eksplisit
+    
     # Transform teks input menjadi representasi TF-IDF
-    input_tfidf = tf_idf_vec.fit_transform([pre_input_text]).toarray()
-
+    input_tfidf = tf_idf_vec.fit_transform([pre_input_text])
+    
+    # Seleksi fitur (pilih 1000 fitur terbaik)
+    selector = SelectKBest(chi2, k=1000)
+    input_tfidf = selector.fit_transform(input_tfidf, result)  # result adalah target (label sentimen)
+    
     # Prediksi sentimen
-    result = model.predict(input_tfidf)
+    result = model.predict(input_tfidf.toarray())
     
     # --- Bagian baru untuk mendapatkan kata-kata penting ---
     feature_names = tf_idf_vec.get_feature_names_out()  # Nama-nama fitur dari TF-IDF
