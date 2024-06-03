@@ -1,3 +1,7 @@
+import gzip
+with gzip.open('tf_idf_feature.pickle.gz', 'rb') as f:
+    vocab = pickle.load(f)
+
 import nltk
 
 # Membuat fungsi untuk memeriksa apakah koleksi data sudah terinstal
@@ -30,7 +34,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 model = load('modelSVM.joblib')
 
-vocab = pickle.load(open('kbest_feature.pickle', 'rb'))
 
 
 def case_folding(text):
