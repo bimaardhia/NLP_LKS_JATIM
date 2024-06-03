@@ -12,6 +12,15 @@ import gzip
 with gzip.open('tf_idf_feature.pickle.gz', 'rb') as f:
     vocab = pickle.load(f)
 
+# Memuat vocabulary dari file pickle
+# Konversi vocab menjadi set dari string
+if isinstance(vocab, np.ndarray):  # Jika vocab adalah numpy array
+    vocab = set(vocab.tolist())  # Ubah menjadi list lalu set
+else:  
+    vocab = set(vocab)  # Jika sudah berupa list, ubah menjadi set
+
+
+
 import nltk
 
 # Membuat fungsi untuk memeriksa apakah koleksi data sudah terinstal
