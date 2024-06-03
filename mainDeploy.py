@@ -139,7 +139,7 @@ with st.expander('Analisis File .csv :'):
 
     if upl:
         data = pd.read_csv(upl,on_bad_lines='skip')
-        data['clean']  = data['text'].apply(preproces_ind)
+        data['clean'] = data['text'].fillna('').astype(str).apply(preproces_ind)  # Fill NaNs and convert to string
         data['Sentiment'] = data['clean'].apply(predict_ind)
         st.write(data.head(5))
 
