@@ -8,20 +8,24 @@ import matplotlib.pyplot as plt
 from joblib import load
 import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
-import gzip
-import gzip
-
+# Memuat vocabulary dari file pickle
 with gzip.open('tf_idf_feature.pickle.gz', 'rb') as f:
     vocab = pickle.load(f)
 
+print(vocab)
+print(type(vocab))
+
 # Meratakan vocab jika diperlukan (jika vocab adalah list of lists)
+vocab = vocab.flatten()
+
 # Periksa tipe data dari vocab dan konversi ke set of strings jika perlu
 if isinstance(vocab, np.ndarray):
     vocab = set(vocab.astype(str))  # Ubah elemen ke string, lalu jadikan set
 elif isinstance(vocab, list):
-    vocab = set([str(x) for x in vocab])  # 
-# Inisialisasi TF-IDF dengan vocabulary yang sudah Anda load
+    vocab = set([str(x) for x in vocab])  # Ubah elemen ke string, lalu jadikan set
 
+# Inisialisasi TF-IDF dengan vocabulary yang sudah Anda load
+tf_idf_vec = TfidfVectorizer(vocabulary=vocab)
 
 
 import nltk
