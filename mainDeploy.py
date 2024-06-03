@@ -140,7 +140,7 @@ def predict(text):
 
 
 st.header('Analisis Sentimen')
-st.write('Berikut merupakan GUI berbasis website menggunakan Streamlit untuk mendeteksi Ujaran Kebencian pada data ( text ) menggunakan algoritma KNN, yang menghasilkan output :')
+st.write('Berikut merupakan GUI berbasis website menggunakan Streamlit untuk mendeteksi Ujaran Kebencian pada data ( text ), yang menghasilkan output :')
 
 st.write(' - Ras    = Teks mengandung Ujaran Kebencian beraspek Ras')
 st.write(' - Agama  = Teks mengandung Ujaran Kebencian beraspek Agama')
