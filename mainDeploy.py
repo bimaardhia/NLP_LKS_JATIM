@@ -1,3 +1,13 @@
+import streamlit as st
+import pandas as pd
+import numpy as np
+import re 
+import string
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+from joblib import load
+import pickle
+from sklearn.feature_extraction.text import TfidfVectorizer
 import gzip
 with gzip.open('tf_idf_feature.pickle.gz', 'rb') as f:
     vocab = pickle.load(f)
@@ -21,16 +31,7 @@ check_and_download('punkt')
 # Memeriksa dan mengunduh koleksi data 'stopwords'
 check_and_download('stopwords')
 
-import streamlit as st
-import pandas as pd
-import numpy as np
-import re 
-import string
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
-from joblib import load
-import pickle
-from sklearn.feature_extraction.text import TfidfVectorizer
+
 
 model = load('modelSVM.joblib')
 
