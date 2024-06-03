@@ -15,8 +15,11 @@ with gzip.open('tf_idf_feature.pickle.gz', 'rb') as f:
     vocab = pickle.load(f)
 
 # Meratakan vocab jika diperlukan (jika vocab adalah list of lists)
-vocab = [item for sublist in vocab for item in sublist]
-
+# Periksa tipe data dari vocab dan konversi ke set of strings jika perlu
+if isinstance(vocab, np.ndarray):
+    vocab = set(vocab.astype(str))  # Ubah elemen ke string, lalu jadikan set
+elif isinstance(vocab, list):
+    vocab = set([str(x) for x in vocab])  # 
 # Inisialisasi TF-IDF dengan vocabulary yang sudah Anda load
 
 
