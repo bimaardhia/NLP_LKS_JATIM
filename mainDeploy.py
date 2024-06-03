@@ -116,19 +116,18 @@ from sklearn.feature_selection import SelectKBest, chi2
 
 
 def predict_ind(text):
-    pre_input_text = preproces_ind(text) 
-    
-# Inisialisasi TF-IDF
-    tf_idf_vec = TfidfVectorizer()  # Tidak perlu lagi memberikan vocabulary secara eksplisit
-    
-    # Transform teks input menjadi representasi TF-IDF
+    pre_input_text = preproces_ind(text)
+    tf_idf_vec = TfidfVectorizer(vocabulary=set(vocab))
     input_tfidf = tf_idf_vec.fit_transform([pre_input_text])
-    
-    # Seleksi fitur (pilih 1000 fitur terbaik)
+
+    # Prediksi sentimen tanpa seleksi fitur terlebih dahulu
+    result = model.predict(input_tfidf.toarray())
+
+    # Seleksi fitur berdasarkan prediksi awal
     selector = SelectKBest(chi2, k=1000)
-    input_tfidf = selector.fit_transform(input_tfidf, result)  # result adalah target (label sentimen)
+    input_tfidf = selector.fit_transform(input_tfidf, result)
     
-    # Prediksi sentimen
+    # Prediksi ulang setelah seleksi fitur
     result = model.predict(input_tfidf.toarray())
     
     # --- Bagian baru untuk mendapatkan kata-kata penting ---
