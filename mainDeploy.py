@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from joblib import load
 import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
+import gzip
 # Memuat vocabulary dari file pickle
 with gzip.open('tf_idf_feature.pickle.gz', 'rb') as f:
     vocab = pickle.load(f)
