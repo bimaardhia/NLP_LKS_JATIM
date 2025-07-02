@@ -116,7 +116,8 @@ def predict(text):
     tf_idf_vec = TfidfVectorizer(vocabulary=set(vocab))
     input_tfidf = tf_idf_vec.fit_transform([pre_input_text]).toarray()
     result = model.predict(input_tfidf)
-    return result
+    # PERBAIKAN: Mengembalikan nilai string tunggal, bukan array
+    return result[0]
 
 # --- Fungsi Bantuan untuk Memproses CSV ---
 def process_and_display_csv(dataframe):
